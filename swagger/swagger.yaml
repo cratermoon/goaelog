@@ -1,0 +1,58 @@
+consumes:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+host: localhost:8080
+info:
+  description: simple utils
+  title: Demo goa APIs
+  version: ""
+paths:
+  /time/{tz}/{long}:
+    get:
+      description: time returns the time for the timezone (optionally in long format)
+      operationId: datetime#time
+      parameters:
+      - description: long format
+        in: path
+        name: long
+        required: true
+        type: boolean
+      - description: Time Zone
+        in: path
+        name: tz
+        required: true
+        type: string
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: OK
+      schemes:
+      - http
+      summary: time datetime
+      tags:
+      - datetime
+  /uuid:
+    get:
+      description: generate returns a new randomly generated uuid
+      operationId: uuid#generate
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: OK
+      schemes:
+      - http
+      summary: generate uuid
+      tags:
+      - uuid
+produces:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+schemes:
+- http
+swagger: "2.0"
