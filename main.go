@@ -11,8 +11,8 @@ import (
 
 func main() {
 	// Create service
-	logger := elog.NewNulLogger()
 	service := goa.New("demo")
+	logger := elog.NewElastiLogger()
 	service.WithLogger(elog.New(logger))
 
 	// Mount middleware
