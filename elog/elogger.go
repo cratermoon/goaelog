@@ -3,6 +3,7 @@ package elog
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/treetopllc/elastilog"
@@ -44,24 +45,22 @@ func NewElasticEntry() *ElasticEntry {
 		},
 	}
 }
-func (n *ElastiLogger) send(msg string, keyvals ...interface{}) {
-	n.count++
+func (n *ElastiLogger) send(msg string, keyvals []interface{}) {
 	e := NewElasticEntry()
 	e.entry.Log = msg
-	fmt.Println(len(keyvals))
 	data2el(e.entry.Attributes, keyvals)
+	e.entry.Attributes["msg_count"] = strconv.Itoa(n.count)
 	n.client.Send(e.entry)
+	n.count++
 }
 
 func data2el(attrs elastilog.Attributes, keyvals []interface{}) {
-	fmt.Println(len(keyvals))
 	for i := 0; i < len(keyvals); i += 2 {
 		k := keyvals[i]
 		var v interface{} = goa.ErrMissingLogValue
 		if i+1 < len(keyvals) {
 			v = keyvals[i+1]
 		}
-		fmt.Printf("%#v=%#v\n", k, v)
 		attrs[fmt.Sprintf("%v", k)] = fmt.Sprintf("%v", v)
 	}
 	return
